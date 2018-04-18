@@ -3,6 +3,8 @@ FROM ubuntu:17.10
 RUN apt-get update && apt-get install -my \
   curl \
   wget \
+  git \
+  zip \
   php-curl \
   php-fpm \
   php-gd \
@@ -15,12 +17,8 @@ RUN apt-get update && apt-get install -my \
   php-bz2 \
   php-zip \
   php-mbstring \
-  git \
-  zip \
   php-apcu \
   php-opcache
-
-
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x |  bash -
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
@@ -40,9 +38,9 @@ ADD conf/apcu.ini /etc/php/7.1/mods-available/20-apcu.ini
 ADD conf/apcu.ini /etc/php/7.1/mods-available/20-apcu_bc.ini
 ADD conf/php-fpm.conf /etc/php/7.1/fpm/php-fpm.conf
 
-RUN curl -sS https://getcomposer.org/installer | php
-RUN mv composer.phar /usr/local/bin/composer
-RUN chmod +x /usr/local/bin/composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+RUN php -r "unlink('composer-setup.php');"
 
 WORKDIR /var/www/html/naturmedicus
 
