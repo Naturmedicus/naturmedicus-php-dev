@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -my \
   wget \
   git \
   zip \
+  php-bcmath \
   php-curl \
   php-fpm \
   php-gd \
